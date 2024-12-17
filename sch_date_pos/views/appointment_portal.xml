@@ -1,0 +1,24 @@
+<odoo>
+    <template id="portal_my_appointments_inherit" inherit_id="appointment.portal_my_appointments">
+<!--        <xpath expr="//t[@t-foreach='appts']" position="inside">-->
+<!--            <tr>-->
+<!--                <td colspan="2" style="color: red;">-->
+<!--                    <p>-->
+<!--                        Debugging: Appointment Name:-->
+<!--                        <t t-if="appointment.name">-->
+<!--                            <t t-out="appointment.name"/>-->
+<!--                        </t>-->
+<!--                        <t t-else="">(Name Missing)</t>-->
+<!--                    </p>-->
+<!--                    <p>-->
+<!--                        is_pos_order_event:-->
+<!--                        <t t-out="appointment.is_pos_order_event or 'False'"/>-->
+<!--                    </p>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--        </xpath>-->
+         <xpath expr="//tbody/t/tr/td/a/t[1]" position="replace">
+        <t t-out="appointment.name"/>
+    </xpath>
+    </template>
+</odoo>

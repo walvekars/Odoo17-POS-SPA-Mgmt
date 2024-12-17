@@ -1,0 +1,17 @@
+<templates id="template" xml:space="preserve">
+    <t t-name="Orderline" t-inherit="point_of_sale.Orderline" t-inherit-mode="extension" owl="1">
+         <xpath expr="//ul[hasclass('info-list')]" position="inside">
+
+                Appointment Date: <span t-esc="line.appointDate"/>
+                <br/>
+
+
+                Appointment Time: <span t-esc="line.appointTime"/>
+                <br/>
+                Employee : <span t-esc="line.conciergeName" />
+             <br/>
+             Resource : <span t-esc="line.resourceName" />
+
+        </xpath>
+    </t>
+</templates>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="nhcl_pos_sale.CustomButtonPopup">
+        <div class="popup popup-textarea custom-popup-size" style="width: 80% !important; max-width: 800px; margin: auto;font-size:20px;">
+            <div class="modal-header" style="background-color: black; color: white;">
+                <h4 class="modal-title" style="background-color: black; color: white;font-size:20px;">
+                    <t t-esc="props.title"/>
+                </h4>
+            </div>
+
+            <div class="modal-body" style="display: flex; font-size: 20px;background-color: black;">
+    <!-- Left Sidebar -->
+    <div style="flex: 1; background-color: black; color: white; padding: 20px;width;800px;">
+        <div style="text-align: center; margin-bottom: 10px; display: flex;">
+            <button t-on-click="changeMonthBefore">&#10094;</button>
+            <h3 style="margin: 0; color: white; font-size: 20px;">
+                <t t-esc="getMonthName(state.month)"/> <t t-esc="state.year"/>
+            </h3>
+            <button t-on-click="changeMonthAfter">&#10095;</button>
+        </div>
+        <div style="display: flex; justify-content: space-around; margin-bottom: 5px;">
+            <div>S</div>
+            <div>M</div>
+            <div>T</div>
+            <div>W</div>
+            <div>T</div>
+            <div>F</div>
+            <div>S</div>
+        </div>
+        <div id="daysGrid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px;">
+            <t t-if="state.dates.length > 0">
+               <t t-foreach="state.dates" t-as="dateObj" t-key="dateObj.date + '_' + dateObj.id">
+                    <div class="date-select"
+                        t-att-style="dateObj.selectable ?
+                                     'text-align: center; padding: 5px; background-color: black; border: 1px solid #ccc; color: #42c1a8;' :
+                                     'text-align: center; padding: 5px; background-color: gray; border: 0px; color: #ccc;'"
+                        t-on-click="(event) => dateObj.selectable and selectDate(dateObj.date, event)"
+                        t-att-class="'date-select ' + (dateObj.selectable ? 'selectable' : 'non-selectable')">
+                        <t t-if="dateObj.date">
+                            <span t-esc="dateObj.date"/>
+                        </t>
+                        <span t-if="!dateObj.date"></span>
+                    </div>
+                </t>
+            </t>
+            <t t-else="">
+                <p>No dates available</p>
+            </t>
+        </div>
+    </div>
+
+    <!-- Right Sidebar -->
+    <div style="flex: 2; padding: 20px; background-color: black; font-size:20px; color: white;width:100%;">
+        <!-- Concierge Selection -->
+        <div style="margin-bottom: 10px;">
+            <label for="conciergeSelect" style="color: #42c1a8;">Select Employee</label>
+            <select id="conciergeSelect" t-on-change="onConciergeChange" style="font-size:18px;">
+                <option value="" disabled="disabled" selected="selected">Select Employee</option>
+                <t t-foreach="state.conciergeOptions" t-as="concierge" t-key="concierge.name">
+                    <option t-att-id="'concierge_option_' + concierge.id" t-att-value="concierge.name" t-esc="concierge.name" style="background-color: black; color: #42c1a8;"/>
+                </t>
+            </select>
+        </div>
+
+        <!-- Resource Selection -->
+        <div style="margin-bottom: 10px;">
+            <label for="resourceSelect" style="color: #42c1a8;">Select Resource</label>
+            <select id="resourceSelect" t-on-change="onResourceChange" style="font-size:18px;">
+                <option value="" disabled="disabled" selected="selected">Select Resource</option>
+                <t t-foreach="state.resourceOptions" t-as="resource" t-key="resource.name">
+                    <option t-att-id="'resource_option_' + resource.id" t-att-value="resource.name" t-esc="resource.name" style="background-color: black; color: #42c1a8;"/>
+                </t>
+            </select>
+        </div>
+
+        <!-- Duration -->
+        <t t-if="state.slotDuration">
+        <div style="margin-bottom: 20px;">
+            <p style="color: white; font-size: 20px;">
+                Duration: <t t-esc="state.slotDuration"/> hours
+            </p>
+        </div>
+        </t>
+
+        <!-- Time Slot Selection -->
+        <h3 style="color: #42c1a8; font-size: 20px;">Select a Time</h3>
+        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 20px;">
+            <t t-if="state.selectedDaySlots and state.selectedDaySlots.length > 0">
+              <t t-foreach="state.selectedDaySlots" t-as="slot" t-key="slot.hour + '_' + slot.id">
+                    <button t-attf-id="slot_button_{{slot.hour}}" class="btn btn-secondary" style="font-size: 20px;"
+                        t-att-style="slot.isBooked ? 'color: red; text-decoration: line-through;' : 'color: #42c1a8; background-color: black; font-size: 20px;'"
+                        t-on-click="() => selectTimeSlot(slot, 'slot_button_' + slot.hour)">
+                        <t t-esc="slot.hour"/>
+                    </button>
+                </t>
+            </t>
+            <t t-else="">
+                <p>Pick a date to check the available time slots</p>
+            </t>
+        </div>
+    </div>
+</div>
+
+
+            <footer class="footer footer-flex modal-footer" style="background-color: black; color: white;">
+                <div class="button confirm highlight btn btn-lg btn-primary" t-on-click="confirm">
+                    <t t-esc="props.confirmText"/>
+                </div>
+
+
+                <button class="btn btn-secondary" t-on-click="onCancel">
+                <t t-esc="props.cancelText" />
+            </button>
+
+            </footer>
+        </div>
+    </t>
+</templates>
